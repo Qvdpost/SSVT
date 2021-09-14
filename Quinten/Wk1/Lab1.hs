@@ -3,6 +3,7 @@ module Lab1 where
 import Data.List
 import Test.QuickCheck
 import Debug.Trace
+import Data.Char (digitToInt)
 
 prime :: Integer -> Bool
 prime n = n > 1 && all (\ x -> rem n x /= 0) xs
@@ -183,8 +184,7 @@ exercise5 = do
   putStrLn "\nThe output would be taken and then you'd look for a smaller prime than than number and see if the preceding 101 prime numbers sums up to that target."
   putStrLn "\nSince the primes function is already supposed to do that, testing this property redundant."
   putStrLn "\nYou could however test wether a similar function with an alternative implementation gives the same result. Then you'd be cover some possible programming errors, though it would probably best to not use the same helper functions in that case."
-
-
+  putStrLn "\nThat function would need to be tested too though. For which you would need another function, and you would go down a recursive test rabbit hole."
 
 
 -------------------Exercise 6---------------------------------
@@ -220,34 +220,103 @@ exercise6 = do
   putStrLn "\nLinearly going through each possible counterexample eliminates that possibility, but comes at the disadvantage of not reaching certain test cases until very late."
 
 -------------------Exercise 7---------------------------------
-intToDigitsSkip :: Integer -> [Integer]
-intToDigitsSkip 0 = []
-intToDigitsSkip n = intToDigitsSkip (n `div` 100) ++ [n `mod` 10]
+reverseAndSplit :: Integer -> [Integer]
+reverseAndSplit n = [toInteger (digitToInt n') | n' <- reverse (show n)]
 
-intToDigits :: Integer -> [Integer]
-intToDigits 0 = []
-intToDigits n = intToDigitsSkip (n `div` 10) ++ [n `mod` 10]
+evens :: [a] -> [a]
+evens [] = []
+evens (a:as) = a : odds as
 
+odds :: [a] -> [a]
+odds [] = []
+odds (a:as) = evens as
+
+-- Multiply numbers by 2 and if they're larger than 4 they will multiply to a number > 9 and should be manipulated accordingly (for Luhn's algo)
 luhnDoubling :: Integer -> Integer
-luhnDoubling n | n > 5 = (n * 2) `mod` 10 + 1
+luhnDoubling n | n > 4 = (n * 2) `mod` 10 + 1
                | otherwise = n * 2
 
 luhn :: Integer -> Bool
-luhn n = checkDigit == (10 - sum (doubles ++ constants) `mod` 10) `mod` 10
+luhn n = sum (evens digits ++ doubles) `mod` 10 == 0
   where
-    checkDigit = n `mod` 10
-    luhnDigits = n `div` 10
-    doubles = map luhnDoubling (intToDigitsSkip luhnDigits)
-    constants = intToDigitsSkip (luhnDigits `div` 10)
+    digits = reverseAndSplit n
+    doubles = map luhnDoubling (odds digits)
 
+-- First length is checked, then starting digits, then Luhn verifies the cc-number for typo's.
 isAmericanExpress, isMaster, isVisa :: Integer -> Bool
-isAmericanExpress n = length (show n) == 15 && elem (take 2 (show n)) ["34", "37"] && luhn n
-isMaster n = length (show n) == 16 && elem (take 2 (show n)) ["51", "55"] || (let inn = read $ take 6 (show n) :: Int in inn >= 222100 && inn <= 272099) && luhn n
-isVisa n = elem (length (show n)) [13, 16] && head (show n) == '4' && luhn n
+isAmericanExpress n = length numbers == 15 && elem inn ["34", "37"] && luhn n
+  where
+    numbers = show n
+    inn = take 2 numbers
+isMaster n = length numbers == 16 && (inn >= 51 && inn <= 55) || (innNew >= 222100 && innNew <= 272099) && luhn n
+  where
+    numbers = show n
+    inn = read (take 2 numbers)
+    innNew = read (take 6 numbers)
+isVisa n = elem (length numbers) [13, 16] && inn == 4 && luhn n
+  where
+    numbers = show n
+    inn = read (take 1 numbers)
+
+-- Valid (presumably) CC-numbers generated from cardguru.io
+examplesVisa = [
+  4556214512807378,
+  4929564649169526,
+  4485463550639492,
+  4588215612507398,
+  4929108167085902
+ ]
+
+examplesAmericanExpress = [
+  342029816567644,
+  349113280028730,
+  378115933668527,
+  341449182557097,
+  343444129018814
+ ]
+
+examplesMastercard = [
+  5279755250454487,
+  5194217062353946,
+  5364593647629453,
+  5397838069245341,
+  5522575429397143
+ ]
 
 exercise7 :: IO ()
 exercise7 = do
   putStrLn $ exercise 7 "Verification functions to test for typos in credit card numbers of 3 popular businesses using Luhn's algorithm."
+
+  putStrLn "\n== Test isVisa (True) =="
+  putStrLn "Input/Output space coverage: Pre-generated CC-numbers."
+  print (all (isVisa) examplesVisa)
+
+  putStrLn "\n== Test isAmericanExpress (True) =="
+  putStrLn "Input/Output space coverage: Pre-generated CC-numbers."
+  print (all (isAmericanExpress) examplesAmericanExpress)
+
+  putStrLn "\n== Test isMaster (True) =="
+  putStrLn "Input/Output space coverage: Pre-generated CC-numbers."
+  print (all (isMaster) examplesMastercard)
+
+  putStrLn "\n== Test for non-Luhn cc-numbers (False) =="
+  putStrLn "Input/Output space coverage: Manipulated pre-generated CC-numbers."
+  putStrLn "\nVisa"
+  print (all (isVisa) (map (+1) examplesVisa))
+
+  putStrLn "\nAmerican Express"
+  print (all (isAmericanExpress) (map (+1) examplesAmericanExpress))
+
+  putStrLn "\nMastercard"
+  print (all (isMaster) (map (+1) examplesMastercard))
+
+  putStrLn "\n == Comments =="
+  putStrLn "\nThese tests are not infallible, but they provide a check that for (assumed) valid CC-numbers the functions provide the correct answers."
+  putStrLn "\nThen by invalidating Luhn (adding 1 throws off the sum mod 10) we show that the functions react accordingly and output False."
+  putStrLn "\nUsing a mathematically proven luhn generator a more robust test could be written, but we don't have one of those unfortunately."
+
+
+
 
 
 -------------------Exercise 8---------------------------------
@@ -264,13 +333,20 @@ accuses Carl Matthew = True
 accuses Carl Jack = True
 accuses _ _ = False
 
-
 accusers :: Boy -> [Boy]
 accusers a = [boy | boy <- boys, accuses boy a]
 
 guilty, honest :: [Boy]
-guilty = head (filter (statementTeacher . answers) (subsequences boys))
+guilty = head (filter (statementTeacher . answers) (subsequences accused))
+  where
+    accused = [boy | boy <- boys, not (null (accusers boy))] -- Only boys who are accused can be guilty
 honest = [boy | boy <- boys, answer boy guilty]
+
+-- Just a copy of guilty that doesn't take the head of a list to remain type compliant.
+allGuiltyBoys :: [[Boy]]
+allGuiltyBoys = filter (statementTeacher . answers) (subsequences accused)
+  where
+    accused = [boy | boy <- boys, not (null (accusers boy))] -- Only boys who are accused can be guilty
 
 statementTeacher :: [Bool] -> Bool
 statementTeacher bs = length (filter (==True) bs) == 3
@@ -287,7 +363,16 @@ answers g = [answer boy g | boy <- boys]
 
 exercise8 :: IO ()
 exercise8 = do
-  putStrLn $ exercise 8 "."
+  putStrLn $ exercise 8 "Determine which boy is guilty and which boys made an honest statement."
+
+  putStrLn "\n== The guilty boy =="
+  print guilty
+
+  putStrLn "\n== All guilty boys (Should be a list that contains only 1 list) =="
+  print allGuiltyBoys
+
+  putStrLn "\n== The honest boys (should be 3 elements long) =="
+  print honest
 
 
 -------------------------------------------------------------
