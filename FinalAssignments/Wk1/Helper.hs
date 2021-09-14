@@ -1,3 +1,10 @@
+{--
+Group Members
+  Quinten Van Der Post
+  Lily O'Sullivan
+  Sun Li
+  Arjen Swartsenburg
+--}
 module Helper where
 
 exercise :: Integer -> String -> String

@@ -1,3 +1,10 @@
+{--
+Group Members
+  Quinten Van Der Post
+  Lily O'Sullivan
+  Sun Li
+  Arjen Swartsenburg
+--}
 import Exercise1 (_main)
 import Exercise2 (_main)
 import Exercise3 (_main)
