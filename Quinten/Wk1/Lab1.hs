@@ -215,6 +215,10 @@ exercise6 = do
   putStrLn "Input/Output space coverage: A list of length n can be specified and counterexamples starting with size m can be specified."
   print (testConjectureLinearInf 3 1)
 
+  putStrLn "\n == Comments =="
+  putStrLn "\nQuickTesting this conjecture has an obvious shortcoming in the fact that it could (depending on the random number generator) generate 100 test cases of which none are an actual counterexample."
+  putStrLn "\nLinearly going through each possible counterexample eliminates that possibility, but comes at the disadvantage of not reaching certain test cases until very late."
+
 -------------------Exercise 7---------------------------------
 intToDigitsSkip :: Integer -> [Integer]
 intToDigitsSkip 0 = []
