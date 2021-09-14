@@ -83,5 +83,10 @@ primenum n = filter(\x -> (prime x)&&(prime (reversal x))&&(x>10))[1..n]
 -- It seems like that the two number of q4 is different, but maybe I am overthinking
 
 
+primenum2 :: Integer -> [Integer]
+primenum2 n = filter(prime.reversal)(takeWhile( <= n)primes)
+primenum3 n = filter(>=10)(primenum2 n)
 
+primenum4 :: Integer -> Bool
+primenum4 n = primenum n == primenum3 n
 -- Q5
