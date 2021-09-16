@@ -8,7 +8,7 @@ import Test.QuickCheck
 
 data Shape = NoTriangle | Equilateral
             | Isosceles  | Rectangular | Other deriving (Eq,Show)
-
+-- 1 Hour 40 minutes
 triangle :: Integer -> Integer -> Integer -> Shape
 triangle a b c
     | not isTriangle = NoTriangle
