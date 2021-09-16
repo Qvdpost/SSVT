@@ -1,7 +1,7 @@
 module Lab2 where
 
 import Data.Char
-import Helper (exercise)
+import Helper (exercise, tupleToList)
 import System.Random
 import Data.Foldable
 
@@ -19,9 +19,6 @@ bucketize (x:xs) (a,b,c,d) | x <= 0.25 = bucketize xs (a+1,b,c,d)
                            | x <= 0.75 = bucketize xs (a,b,c+1,d)
                            | otherwise = bucketize xs (a,b,c,d+1)
 bucketize [] buckets = buckets
-
-tupleToList :: (Integer, Integer, Integer, Integer) -> [Integer]
-tupleToList (a,b,c,d) = [a,b,c,d]
 
 prop_Distribution :: (Integer, Integer, Integer, Integer) -> Integer -> Bool
 prop_Distribution buckets n = all (\x -> fromIntegral (abs (x - fraction)) < error) (tupleToList buckets)
