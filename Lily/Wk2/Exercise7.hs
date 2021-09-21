@@ -9,11 +9,8 @@ import Test.QuickCheck
 
 iban :: String -> Bool
 iban cs
-  | validCountry = (read (lettersToDigits (drop 4 cs ++ initialChars)) :: Integer) `mod` 97 == 1
+  | validateCountry (take 2 cs) (length cs) = (read (lettersToDigits (drop 4 cs ++ take 4 cs)) :: Integer) `mod` 97 == 1
   | otherwise = False
-  where
-    validCountry = validateCountry (take 2 cs) (length cs)
-    initialChars = take 4 cs
 
 validateCountry :: String -> Int -> Bool
 validateCountry xs len = case Data.Map.lookup xs getCountryMap of

@@ -27,7 +27,7 @@ test_rot13Rotation s = s == rot13 (rot13 s)
 
 exercise5 :: IO ()
 exercise5 =
-  putStrLn $ exercise 5 "Rot13"
+  putStrLn $ exercise 6 "Rot13"
 
 _main :: IO ()
 _main =
