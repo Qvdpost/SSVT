@@ -35,22 +35,7 @@ instance Ord Prop where
 
 -- strength =  [((a,b), stronger [(-10)..10] (property a) (property b)) | [a, b] <- choose 2 props]
 
--- https://stackoverflow.com/questions/2097501/learning-haskell-how-to-remove-an-item-from-a-list-in-haskell
-removeItem :: Eq a =>  a -> [a] -> [a]
-removeItem _ []                 = []
-removeItem x (y:ys) | x == y    = ys -- Only remove 1 occurrence.
-                    | otherwise = y : removeItem x ys
 
-isPermutation :: Eq a => [a] -> [a] -> Bool
-isPermutation (x:xs) ys| x `elem` ys = isPermutation xs (removeItem x ys)
-isPermutation [] [] = True
-isPermutation _ _ = False
-
--- We check... a bunch.
-test_IsPermutation :: Eq a => [a] -> Bool
-test_IsPermutation as = length perms == length [x | x <- perms, isPermutation x as]
-    where
-        perms = permutations as
 
 
 exercise3 :: IO ()
