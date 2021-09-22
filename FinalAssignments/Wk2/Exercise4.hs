@@ -51,8 +51,8 @@ pre_condElems as bs = as `elem` (permutations bs)
 
 -- post_condElems :: Property -> Bool
 -- post_condElems b = property True == b
-prop_ElemsPermutations ::[Int] -> [Int] -> Property
-prop_ElemsPermutations as bs = pre_condElems as bs ==> isPermutation as bs == True
+prop_ElemsPermutations :: [Int] -> [Int] -> Property
+prop_ElemsPermutations as bs = length as < 10 && pre_condElems as bs ==> isPermutation as bs == True
 
 
 -- pre_cond :: Eq a => [a] -> [a] ->
