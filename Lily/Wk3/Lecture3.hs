@@ -218,7 +218,7 @@ parseForm (TokenOP : tokens) =
                          (f2,rest) <- parseImpl ys ]
    ++
   [ (Equiv f1 f2, rest) | (f1,ys) <- parseForm tokens,
-                          (f2,rest) <- parseEquiv ys ] 
+                          (f2,rest) <- parseEquiv ys ]
 parseForm tokens = []
 
 parseForms :: Parser Token [Form] 

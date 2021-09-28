@@ -14,6 +14,9 @@ import Lecture3
 import System.Random
 import Test.QuickCheck
 
+-- Tauthology
+-- (A&B)->(A or B)
+
 exercise1 :: IO ()
 exercise1 = do
   putStrLn $ exercise 1 "Definitions of: contradiction,tautology,entails,equiv"
