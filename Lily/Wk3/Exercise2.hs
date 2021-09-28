@@ -10,9 +10,11 @@ module Exercise2 where
 
 import Data.List
 import Helper (exercise)
-import Lecture3
-import System.Random
+import Lecture3(parse)
+import System.Random ()
 import Test.QuickCheck
+
+
 
 exercise2 :: IO ()
 exercise2 = do

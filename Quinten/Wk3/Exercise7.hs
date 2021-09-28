@@ -8,7 +8,7 @@ Group Members
 
 module Exercise7 where
 
-import Data.List
+import Data.List ()
 import Helper (exercise)
 import Lecture3
 import System.Random

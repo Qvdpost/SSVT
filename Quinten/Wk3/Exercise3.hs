@@ -30,7 +30,7 @@ toCNF (Cnj fs) = Cnj (map toCNF fs)
 toCNF (Dsj (f:fs)) = distr (toCNF f) (map toCNF fs)
 
 {- 
-  Ditributive law: P∨(Q∧R))`Equiv`(P∨Q)∧(P∨R)
+  Distributive law: P∨(Q∧R))`Equiv`(P∨Q)∧(P∨R)
 
   A boolean expression φ is in conjunctive normal form(CNF) if φ a sum of Cnj clauses (Ci) where each clause
   Ci is the disjunction of zero or more literals.
@@ -40,9 +40,29 @@ distr (Cnj f g) fs = Cnj (distr f fs) (distr g fs) -- Outer conjunction clauses
 distr fs (Cnj f g) = Cnj (distr f fs) (distr g fs) -- Outer conjunction clauses
 distr f g = Dsj f g -- Inner disjunction clauses
 
--- Defenition of CNF should come here.
+-- Definition of CNF should come here.
+-- "A statement is in conjunctive normal form if it is a conjunction (sequence of ANDs) consisting of one or more conjuncts, each of which is a disjunction (OR) of one or more literals"
+-- https://mathworld.wolfram.com/ConjunctiveNormalForm.html
 formToCNF :: Form -> Form
 formToCNF f = toCNF (nnf (arrowfree f))
+
+{-- Test Cases
+  P                   No Change
+  !P                  No Change
+  (P v Q) ^ (!P v R)  No Change
+  A v B               No Change
+  P -> Q
+  !!P
+  !(P ^ Q)
+  !(P <--> Q)
+
+
+  Maybe..
+  (P -> Q) ^ (P -> R) Requires two steps to break down
+
+--}
+
+
 
 exercise3 :: IO ()
 exercise3 = do
