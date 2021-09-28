@@ -41,6 +41,21 @@ randomDisjunction = do
   q <-randomProp
   return (Dsj (p:[q]))
 
+randomForm::IO Form
+randomForm = do
+  n <-randomRIO (1::Int, 4)
+  case n of
+    1 -> randomConjunction
+    2 -> randomDisjunction
+    3 -> randomNegate
+    4 -> randomProp
+
+-- Below does not compile
+-- getManyRandomForms::[IO Form]
+-- getManyRandomForms = do
+--   n <- randomRIO (1,4)
+--   return [ randomForm | randomForm <- [0..n]]
+
 
 exercise4 :: IO ()
 exercise4 = do

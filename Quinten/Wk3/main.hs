@@ -11,7 +11,6 @@ import Exercise3 (_main)
 import Exercise4 (_main)
 import Exercise5 (_main)
 import Exercise6 (_main)
-import Exercise7 (_main)
 
 main :: IO ()
 main = do
@@ -21,6 +20,5 @@ main = do
   Exercise4._main
   Exercise5._main
   Exercise6._main
-  Exercise7._main
 
   putStrLn "\n\n✨ All Done! ✨"
