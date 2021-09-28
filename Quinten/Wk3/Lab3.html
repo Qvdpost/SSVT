@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+
+/* start css.sty */
+.rm-lmtt-12{ font-family: monospace;}
+.rm-lmri-12{ font-style:italic;}
+.rm-lmbx-12{ font-weight: bold;}
+.rm-lmr-8{font-size:66%;}
+.lmmi-8{font-size:66%;}
+.lmsy8-{font-size:66%;}
+.lmex-10{font-size:83%;}
+p.noindent { text-indent: 0em }
+td p.noindent { text-indent: 0em; margin-top:0em; }
+p.nopar { text-indent: 0em; }
+p.indent{ text-indent: 1.5em }
+@media print {div.crosslinks {visibility:hidden;}}
+a img { border-top: 0; border-left: 0; border-right: 0; }
+center { margin-top:1em; margin-bottom:1em; }
+td center { margin-top:0em; margin-bottom:0em; }
+.Canvas { position:relative; }
+img.math{vertical-align:middle;}
+li p.indent { text-indent: 0em }
+li p:first-child{ margin-top:0em; }
+li p:last-child, li div:last-child { margin-bottom:0.5em; }
+li p~ul:last-child, li p~ol:last-child{ margin-bottom:0.5em; }
+.enumerate1 {list-style-type:decimal;}
+.enumerate2 {list-style-type:lower-alpha;}
+.enumerate3 {list-style-type:lower-roman;}
+.enumerate4 {list-style-type:upper-alpha;}
+div.newtheorem { margin-bottom: 2em; margin-top: 2em;}
+.obeylines-h,.obeylines-v {white-space: nowrap; }
+div.obeylines-v p { margin-top:0; margin-bottom:0; }
+.overline{ text-decoration:overline; }
+.overline img{ border-top: 1px solid black; }
+td.displaylines {text-align:center; white-space:nowrap;}
+.centerline {text-align:center;}
+.rightline {text-align:right;}
+div.verbatim {font-family: monospace; white-space: nowrap; text-align:left; clear:both; }
+.fbox {padding-left:3.0pt; padding-right:3.0pt; text-indent:0pt; border:solid black 0.4pt; }
+div.fbox {display:table}
+div.center div.fbox {text-align:center; clear:both; padding-left:3.0pt; padding-right:3.0pt; text-indent:0pt; border:solid black 0.4pt; }
+div.minipage{width:100%;}
+div.center, div.center div.center {text-align: center; margin-left:1em; margin-right:1em;}
+div.center div {text-align: left;}
+div.flushright, div.flushright div.flushright {text-align: right;}
+div.flushright div {text-align: left;}
+div.flushleft {text-align: left;}
+.underline{ text-decoration:underline; }
+.underline img{ border-bottom: 1px solid black; margin-bottom:1pt; }
+.framebox-c, .framebox-l, .framebox-r { padding-left:3.0pt; padding-right:3.0pt; text-indent:0pt; border:solid black 0.4pt; }
+.framebox-c {text-align:center;}
+.framebox-l {text-align:left;}
+.framebox-r {text-align:right;}
+span.thank-mark{ vertical-align: super }
+span.footnote-mark sup.textsuperscript, span.footnote-mark a sup.textsuperscript{ font-size:80%; }
+div.tabular, div.center div.tabular {text-align: center; margin-top:0.5em; margin-bottom:0.5em; }
+table.tabular td p{margin-top:0em;}
+table.tabular {margin-left: auto; margin-right: auto;}
+td p:first-child{ margin-top:0em; }
+td p:last-child{ margin-bottom:0em; }
+div.td00{ margin-left:0pt; margin-right:0pt; }
+div.td01{ margin-left:0pt; margin-right:5pt; }
+div.td10{ margin-left:5pt; margin-right:0pt; }
+div.td11{ margin-left:5pt; margin-right:5pt; }
+table[rules] {border-left:solid black 0.4pt; border-right:solid black 0.4pt; }
+td.td00{ padding-left:0pt; padding-right:0pt; }
+td.td01{ padding-left:0pt; padding-right:5pt; }
+td.td10{ padding-left:5pt; padding-right:0pt; }
+td.td11{ padding-left:5pt; padding-right:5pt; }
+table[rules] {border-left:solid black 0.4pt; border-right:solid black 0.4pt; }
+.hline hr, .cline hr{ height : 1px; margin:0px; }
+.tabbing-right {text-align:right;}
+span.TEX {letter-spacing: -0.125em; }
+span.TEX span.E{ position:relative;top:0.5ex;left:-0.0417em;}
+a span.TEX span.E {text-decoration: none; }
+span.LATEX span.A{ position:relative; top:-0.5ex; left:-0.4em; font-size:85%;}
+span.LATEX span.TEX{ position:relative; left: -0.4em; }
+div.float, div.figure {margin-left: auto; margin-right: auto;}
+div.float img {text-align:center;}
+div.figure img {text-align:center;}
+.marginpar,.reversemarginpar {width:20%; float:right; text-align:left; margin-left:auto; margin-top:0.5em; font-size:85%; text-decoration:underline;}
+.marginpar p,.reversemarginpar p{margin-top:0.4em; margin-bottom:0.4em;}
+.reversemarginpar{float:left;}
+table.equation {width:100%;}
+.equation td{text-align:center; }
+td.equation { margin-top:1em; margin-bottom:1em; }
+td.equation-label { width:5%; text-align:center; }
+td.eqnarray4 { width:5%; white-space: normal; }
+td.eqnarray2 { width:5%; }
+table.eqnarray-star, table.eqnarray {width:100%;}
+div.eqnarray{text-align:center;}
+div.array {text-align:center;}
+div.pmatrix {text-align:center;}
+table.pmatrix {width:100%;}
+span.pmatrix img{vertical-align:middle;}
+div.pmatrix {text-align:center;}
+table.pmatrix {width:100%;}
+span.bar-css {text-decoration:overline;}
+img.cdots{vertical-align:middle;}
+.partToc a, .partToc, .likepartToc a, .likepartToc {line-height: 200%; font-weight:bold; font-size:110%;}
+.index-item, .index-subitem, .index-subsubitem {display:block}
+div.caption {text-indent:-2em; margin-left:3em; margin-right:1em; text-align:left;}
+div.caption span.id{font-weight: bold; white-space: nowrap; }
+h1.partHead{text-align: center}
+p.bibitem { text-indent: -2em; margin-left: 2em; margin-top:0.6em; margin-bottom:0.6em; }
+p.bibitem-p { text-indent: 0em; margin-left: 2em; margin-top:0.6em; margin-bottom:0.6em; }
+.paragraphHead, .likeparagraphHead { margin-top:2em; font-weight: bold;}
+.subparagraphHead, .likesubparagraphHead { font-weight: bold;}
+.quote {margin-bottom:0.25em; margin-top:0.25em; margin-left:1em; margin-right:1em; text-align:justify;}
+.verse{white-space:nowrap; margin-left:2em}
+div.maketitle {text-align:center;}
+h2.titleHead{text-align:center;}
+div.maketitle{ margin-bottom: 2em; }
+div.author, div.date {text-align:center;}
+div.thanks{text-align:left; margin-left:10%; font-size:85%; font-style:italic; }
+div.author{white-space: nowrap;}
+.quotation {margin-bottom:0.25em; margin-top:0.25em; margin-left:1em; }
+.abstract p {margin-left:5%; margin-right:5%;}
+div.abstract {width:100%;}
+.equation td{text-align:center; }
+.equation-star td{text-align:center; }
+table.equation-star { width:100%; }
+table.equation { width:100%; }
+table.align, table.alignat, table.xalignat, table.xxalignat, table.flalign {width:95%; margin-left:5%; white-space: nowrap;}
+table.align-star, table.alignat-star, table.xalignat-star, table.flalign-star {margin-left:auto; margin-right:auto; white-space: nowrap;}
+td.align-label { width:5%; text-align:center; }
+td.align-odd { text-align:right; padding-right:0.3em;}
+td.align-even { text-align:left; padding-right:0.6em;}
+table.multline, table.multline-star {width:100%;}
+td.gather {text-align:center; }
+table.gather {width:100%;}
+div.gather-star {text-align:center;}
+.rotatebox{display: inline-block;}
+.figure img.graphics {margin-left:10%;}
+/* end css.sty */
+pre{display: inline-block;margin-left: 1em;}
+
+  </style>
+  <link rel="stylesheet" href="../pandoc.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+</head>
+<body>
+<h2 id="lab-3-software-specification-and-testing">Lab 3 Software Specification and Testing</h2>
+<hr />
+<div class="sourceCode">
+<pre class="sourceCode literate literatehaskell"><code class="sourceCode literatehaskell"><span class="ot">&gt;</span> <span class="kw">module</span> <span class="dt">Lab3</span> <span class="kw">where</span>
+<span class="ot">&gt;</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Data.List</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">System.Random</span>
+<span class="ot">&gt;</span> <span class="kw">import </span><span class="dt">Test.QuickCheck</span>
+<span class="ot">&gt;</span> <span class="co">-- import Lecture3</span></code></pre>
+</div>
+<hr /><ol style="list-style-type: decimal;">
+<li></li>
+</ol>
+<p>The lecture notes of this week discuss the notions of satisfiability, tautology, contradiction, logical entailment and logical equivalence for formulas of propositional logic.</p>
+<p>The lecture notes give a definition of <code>satisfiable</code>, for objects of type <code>Form</code>.</p>
+<p>Your task is to give definitions of:</p>
+<pre style='color:#000000;background:#ffffff;'>contradiction <span style='color:#808030; '>:</span><span style='color:#808030; '>:</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Bool</span>
+
+tautology <span style='color:#808030; '>:</span><span style='color:#808030; '>:</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Bool</span>
+
+<span style='color:#696969; '>-- | logical entailment </span>
+entails <span style='color:#808030; '>:</span><span style='color:#808030; '>:</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Bool</span>
+
+<span style='color:#696969; '>-- | logical equivalence</span>
+equiv <span style='color:#808030; '>:</span><span style='color:#808030; '>:</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Bool</span>
+</pre>
+<p>Use a module that imports <code>Lecture3.lhs</code> or <code>Lecture3.hs</code> (commented out above). Check that your definitions are correct.</p>
+<p>Deliverables: implementation, description of your method of checking the definitions, indication of time spent.</p>
+<hr /><ol start="2" style="list-style-type: decimal;">
+<li></li>
+</ol>
+<p>The lecture notes of this week define a function <code>parse</code> for parsing propositional formulas. Test this function. You can use any test method you want.</p>
+<p>Deliverables: test report describing the test method used and the outcome of the test, indication of time spent.</p>
+<hr /><ol start="3" style="list-style-type: decimal;">
+<li></li>
+</ol>
+<p>The lecture notes of this week discuss the conversion of Boolean formulas (formulas of propositional logic) into CNF form. The lecture notes also give a definition of a Haskell datatype for formulas of propositional logic, using lists for conjunctions and disjunctions. Your task is to write a Haskell program for converting formulas into CNF.</p>
+<p>Deliverables: conversion program with documentation, indication of time spent.</p>
+<hr /><ol start="4" style="list-style-type: decimal;">
+<li></li>
+</ol>
+<p>Write a formula generator for random testing of properties of propositional logic, or teach yourself enough <code>QuickCheck</code> to use random QuickCheck testing of formulas.</p>
+<p>Use your random testing method to test the correctness of the conversion program from the previous exercise. Formulate a number of relevant properties to test, and carry out the tests, either with your own random formula generator or with <code>QuickCheck</code>.</p>
+<p>Deliverables: generator for formulas, sequence of test properties, test report, indication of time spent.</p>
+<hr />
+
+<ol start="5" style="list-style-type: decimal;">
+<li></li>
+</ol>
+
+<p class="noindent"><span class="head">
+Consider the following implementation of a function <span class="obeylines-h"><span class="verb"><span class="rm-lmtt-12">sub::Form-&gt;Set</span><span class="rm-lmtt-12">&nbsp;Form</span></span></span>
+that finds all the sub-formulae of a given formula.
+
+
+
+</p>
+
+<pre style='color:#000000;background:#ffffff;'>
+<span style='color:#800000; font-weight:bold; '>import</span> <span style='color:#bb7977; font-weight:bold; '>SetOrd</span>
+
+<span style='color:#800000; font-weight:bold; '>type</span> <span style='color:#bb7977; font-weight:bold; '>Name</span> <span style='color:#808030; '>=</span> <span style='color:#bb7977; font-weight:bold; '>Int</span>
+
+<span style='color:#800000; font-weight:bold; '>data</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>=</span> <span style='color:#bb7977; font-weight:bold; '>Prop</span> <span style='color:#bb7977; font-weight:bold; '>Name</span>
+          <span style='color:#808030; '>|</span> <span style='color:#bb7977; font-weight:bold; '>Neg</span>  <span style='color:#bb7977; font-weight:bold; '>Form</span>
+          <span style='color:#808030; '>|</span> <span style='color:#bb7977; font-weight:bold; '>Cnj</span> <span style='color:#808030; '>[</span><span style='color:#bb7977; font-weight:bold; '>Form</span><span style='color:#808030; '>]</span>
+          <span style='color:#808030; '>|</span> <span style='color:#bb7977; font-weight:bold; '>Dsj</span> <span style='color:#808030; '>[</span><span style='color:#bb7977; font-weight:bold; '>Form</span><span style='color:#808030; '>]</span>
+          <span style='color:#808030; '>|</span> <span style='color:#bb7977; font-weight:bold; '>Impl</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#bb7977; font-weight:bold; '>Form</span>
+          <span style='color:#808030; '>|</span> <span style='color:#bb7977; font-weight:bold; '>Equiv</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#bb7977; font-weight:bold; '>Form</span>
+          <span style='color:#800000; font-weight:bold; '>deriving</span> <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Eq</span><span style='color:#808030; '>,</span><span style='color:#bb7977; font-weight:bold; '>Ord</span><span style='color:#808030; '>)</span>
+
+sub <span style='color:#808030; '>:</span><span style='color:#808030; '>:</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Set</span> <span style='color:#bb7977; font-weight:bold; '>Form</span>
+sub <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Prop</span> x<span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> <span style='color:#bb7977; font-weight:bold; '>Set</span> <span style='color:#808030; '>[</span><span style='color:#bb7977; font-weight:bold; '>Prop</span> x<span style='color:#808030; '>]</span>
+sub <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Neg</span> f<span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> unionSet <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Set</span> <span style='color:#808030; '>[</span><span style='color:#bb7977; font-weight:bold; '>Neg</span> f<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f<span style='color:#808030; '>)</span>
+sub f<span style='color:#808030; '>@</span><span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Cnj</span> <span style='color:#808030; '>[</span>f1<span style='color:#808030; '>,</span>f2<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> unionSet <span style='color:#808030; '>(</span> unionSet <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Set</span> <span style='color:#808030; '>[</span>f<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f1<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f2<span style='color:#808030; '>)</span>
+sub f<span style='color:#808030; '>@</span><span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Dsj</span> <span style='color:#808030; '>[</span>f1<span style='color:#808030; '>,</span>f2<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> unionSet <span style='color:#808030; '>(</span> unionSet <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Set</span> <span style='color:#808030; '>[</span>f<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f1<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f2<span style='color:#808030; '>)</span>
+sub f<span style='color:#808030; '>@</span><span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Impl</span> f1 f2<span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> unionSet <span style='color:#808030; '>(</span> unionSet <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Set</span> <span style='color:#808030; '>[</span>f<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f1<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f2<span style='color:#808030; '>)</span>
+sub f<span style='color:#808030; '>@</span><span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Equiv</span> f1 f2<span style='color:#808030; '>)</span> <span style='color:#808030; '>=</span> unionSet <span style='color:#808030; '>(</span> unionSet <span style='color:#808030; '>(</span><span style='color:#bb7977; font-weight:bold; '>Set</span> <span style='color:#808030; '>[</span>f<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f1<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span> <span style='color:#808030; '>(</span>sub f2<span style='color:#808030; '>)</span>
+</pre>
+
+<!--l. 161--><p class="nopar" >
+      <ol  class="enumerate1" >
+      <li
+  class="enumerate" id="x1-1033x1">How  can  you  prove  that  the  <span class="obeylines-h"><span class="verb"><span
+class="rm-lmtt-12">sub</span></span></span> implementation  is  correct?  Test  the
+      implementation with two QuickCheck properties.
+      </li>
+      <li
+  class="enumerate" id="x1-1035x2">Write a recursive implementation of the function <span class="obeylines-h"><span class="verb"><span
+class="rm-lmtt-12">nsub</span><span
+class="rm-lmtt-12">&#x00A0;::</span><span
+class="rm-lmtt-12">&#x00A0;Form</span><span
+class="rm-lmtt-12">&#x00A0;-&#x003E;</span><span
+class="rm-lmtt-12">&#x00A0;Int</span></span></span> such
+      that <span class="obeylines-h"><span class="verb"><span
+class="rm-lmtt-12">nsub</span><span
+class="rm-lmtt-12">&#x00A0;f</span></span></span> computes the exact number of sub-formulae of the formula <span class="obeylines-h"><span class="verb"><span
+class="rm-lmtt-12">f</span></span></span>. Test your
+      implementation using Quickcheck.</li></ol>
+</div>
+
+<hr />
+
+
+<ol start="6" style="list-style-type: decimal;">
+    <li></li>
+</ol>
+<p>In <a href="https://en.wikipedia.org/wiki/Boolean_satisfiability_problem">SAT solving</a>, one common technique is resolution style theorem proving. For that, it is usual to represent a formula in CNF as a list of clauses, were a <a href="https://en.wikipedia.org/wiki/Clause_%28logic%29">clause</a> is a list of literals, and where a literal is represented as an integer, with negative sign indicating negation. Here are the appropriate type declarations.</p>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000; font-weight:bold; '>type</span> <span style='color:#bb7977; font-weight:bold; '>Clause</span>  <span style='color:#808030; '>=</span> <span style='color:#808030; '>[</span><span style='color:#bb7977; font-weight:bold; '>Int</span><span style='color:#808030; '>]</span>
+<span style='color:#800000; font-weight:bold; '>type</span> <span style='color:#bb7977; font-weight:bold; '>Clauses</span> <span style='color:#808030; '>=</span> <span style='color:#808030; '>[</span><span style='color:#bb7977; font-weight:bold; '>Clause</span><span style='color:#808030; '>]</span>
+</pre>
+<p>Clauses should be read disjunctively, and clause lists conjunctively. So <span class="math inline">\(5\)</span> represents the atom <span class="math inline">\(p_5\)</span>, <span class="math inline">\(-5\)</span> represents the literal <span class="math inline">\(\neg p_5\)</span>, the clause <span class="math inline">\([5,-6]\)</span> represents <span class="math inline">\(p_5 \lor \neg p_6\)</span>, and the clause list <span class="math inline">\([[4],[5,-6]]\)</span> represents the formula <span class="math inline">\(p_4 \land (p_5 \lor \neg p_6)\)</span>.</p>
+<p>Write a program for converting formulas to clause form. You may assume that your formulas are already in CNF. Here is the appropriate declaration:</p>
+<pre style='color:#000000;background:#ffffff;'>cnf2cls <span style='color:#808030; '>:</span><span style='color:#808030; '>:</span> <span style='color:#bb7977; font-weight:bold; '>Form</span> <span style='color:#808030; '>-</span><span style='color:#808030; '>></span> <span style='color:#bb7977; font-weight:bold; '>Clauses</span>
+</pre>
+<p>If you combine your conversion function from an earlier exercise with <code>cnf2cls</code> you have a function that can convert any formula to clause form.</p>
+<p>Use automated testing to check whether your translation is correct, employing some appropriate properties to check.</p>
+<p>Deliverables: Conversion program, test generator, test properties, documentation of the automated testing process. Also, give an indication of time spent.</p>
+<hr />
+
+<ol start="7" style="list-style-type: decimal;">
+    <li><b>Bonus</b></li>
+</ol>
+<p>Solve three problems of your choice from <a href="http://projecteuler.net/">Project Euler</a> in Haskell. Solving harder problems will account for more bonus points up to 2. Also, describe how you would test the functions you implement for the Euler exercise.</p>
+<hr />
+
+<p><strong>Submission deadline</strong> is Tuesday evening, September 28, at 23:59.</p>
+<div id="refs" class="references"></div>
+</body>
+</html>
