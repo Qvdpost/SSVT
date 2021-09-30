@@ -12,9 +12,9 @@ module Exercise1 (_main, generateSetSystemRandom) where
 
 import Data.List (nub)
 import Helper (exercise)
-import SetOrd (Set, list2set)
+import SetOrd (Set(Set), list2set)
 import System.Random (Random (randomR), getStdRandom)
-import Test.QuickCheck (Arbitrary (arbitrary), generate)
+import Test.QuickCheck (Arbitrary (arbitrary), generate, Gen, sample)
 
 getRandomInt :: Int -> IO Int
 getRandomInt n = getStdRandom (randomR (0, n))
@@ -41,23 +41,29 @@ getIntL k n = do
 -- All above from lecture 2 notes
 -- https://docs.google.com/presentation/d/1-2u4dnNMhIhaTHcrMoa08YWqrrx_cYdtVvlY9JpXKVI/edit#slide=id.g410331214a_0_10
 
-getRandomListQuickCheck :: IO [Int]
-getRandomListQuickCheck = generate arbitrary :: IO [Int]
+getRandomListQuickCheck :: Gen [Int]
+getRandomListQuickCheck = arbitrary :: Gen [Int]
 
-generateSetQuickCheck :: IO (Set a)
-generateSetQuickCheck = do
-  list2set . nub <$> getRandomListQuickCheck
+generateSetQuickCheck :: Gen (Set Int)
+generateSetQuickCheck = list2set . nub <$> getRandomListQuickCheck
 
-generateSetSystemRandom :: IO (Set a)
-generateSetSystemRandom = do
-  list2set . nub <$> genIntList
+generateSetSystemRandom ::  IO (Set Int)
+generateSetSystemRandom = list2set . nub <$> genIntList
+
 
 exercise1 :: IO ()
 exercise1 = do
   putStrLn $ exercise 1 "Generate Random Set"
   putStrLn "Example output: "
-  putStrLn $ "generateSetQuickCheck" show generateSetSystemRandom
-  putStrLn $ "generateSetQuickCheck" show generateSetQuickCheck
+  putStrLn "generateSetSystemRandom example: "
+  x <-  generateSetSystemRandom
+  putStrLn (show x)
+
+  putStrLn ""
+  
+  putStrLn "generateSetQuickCheck sample:"
+  sample generateSetQuickCheck
+  
 
 _main :: IO ()
 _main = do

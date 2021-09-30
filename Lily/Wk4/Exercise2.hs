@@ -8,10 +8,10 @@ Group Members
 
 module Exercise2 where
 
-import Data.List (intersect, nub, (\\))
+import Data.List (intersect, nub, (\\), union)
 import Helper (exercise)
 import SetOrd (Set (Set),inSet,unionSet)
-import Test.QuickCheck ( (==>), Property )
+import Test.QuickCheck ( (==>), Property, Gen, generate, arbitrary, suchThat, quickCheck)
 import Exercise1(generateSetSystemRandom)
 
 -- Time Spent: 1 Hour 30 minutes
@@ -25,9 +25,6 @@ setUnion = unionSet
 setDifference::Eq a => Set a -> Set a -> Set a
 setDifference (Set a) (Set b) = Set (a \\ b)
 
-genNoDuplicates:: Gen Set [Int]
-genNoDuplicates = Set (generate arbitrary :: IO [Int] `suchThat` $ \x -> x == nub x)
-
 --  Homebrew-ed Tests  --
 testIntersection :: Bool
 testIntersection = do
@@ -39,7 +36,7 @@ testUnion :: Bool
 testUnion = do
     (Set a) <- generateSetSystemRandom
     (Set b) <- generateSetSystemRandom
-    return (setUnion (Set a) (Set b) == Set (unionBy (==) a b))
+    return (setUnion (Set a) (Set b) == Set (a `union` b))
 
 testDifference :: Bool
 testDifference = do
@@ -49,23 +46,23 @@ testDifference = do
 --  End  --
 
 --  QuickCheck Tests  --
-testIntersection :: Set [Int] -> Set [Int] -> Bool
-testIntersection (Set a) (Set b) = setIntersection (Set a) (Set b) == Set (a `intersect` b)
+testIntersection' :: Set Int -> Set Int -> Bool
+testIntersection' (Set a) (Set b) = setIntersection (Set a) (Set b) == Set (a `intersect` b)
 
-testUnion :: Set [Int] -> Set [Int] -> Bool
-testUnion (Set a) (Set b) = setUnion (Set a) (Set b) == Set (unionBy (==) a b)
+testUnion' :: Set Int -> Set Int -> Bool
+testUnion' (Set a) (Set b) = setUnion (Set a) (Set b) == Set (a `union` b)
 
-testDifference :: Set [Int] -> Set [Int] -> Bool
-testDifference (Set a) (Set b) = setDifference (Set a) (Set b) == Set (a \\ b)
+testDifference' :: Set Int -> Set Int -> Bool
+testDifference' (Set a) (Set b) = setDifference (Set a) (Set b) == Set (a \\ b)
 --  End  --
 
 exercise2 :: IO ()
 exercise2 = do
     putStrLn $ exercise 2 "Implement and test set Intersection, Union, Difference"
     putStrLn $ "Example output: "
-    quickCheck genNoDuplicates testIntersection
-    quickCheck genNoDuplicates testUnion
-    quickCheck genNoDuplicates testDifference
+    -- quickCheck genNoDuplicates testIntersection
+    -- quickCheck genNoDuplicates testUnion
+    -- quickCheck genNoDuplicates testDifference
 
 _main :: IO ()
 _main = do
