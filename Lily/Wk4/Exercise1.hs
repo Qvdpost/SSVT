@@ -38,6 +38,9 @@ getIntL k n = do
    xs <- getIntL k (n-1)
    return (y:xs)
 
+-- All above from lecture 2 notes
+-- https://docs.google.com/presentation/d/1-2u4dnNMhIhaTHcrMoa08YWqrrx_cYdtVvlY9JpXKVI/edit#slide=id.g410331214a_0_10
+
 getRandomListQuickCheck::IO [Int]
 getRandomListQuickCheck = generate arbitrary :: IO [Int]
 
@@ -52,7 +55,7 @@ generateSetSystemRandom = do
 exercise1 :: IO ()
 exercise1 = do
   putStrLn $ exercise 1 "Generate Random Set"
-  putStrLn $ "Example output: "
+  putStrLn "Example output: "
   putStrLn $ "generateSetQuickCheck" show generateSetSystemRandom
   putStrLn $ "generateSetQuickCheck" show generateSetQuickCheck
 
