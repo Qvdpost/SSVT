@@ -8,21 +8,21 @@ Group Members
 
 -- Time Spent: 30 Minutes
 
-module Exercise1 where
+module Exercise1 (_main, generateSetSystemRandom) where
 
-import Data.List(nub)
+import Data.List (nub)
 import Helper (exercise)
-import System.Random ( getStdRandom, Random(randomR) )
-import Test.QuickCheck ( generate, Arbitrary(arbitrary) )
-import SetOrd(Set,list2set)
+import SetOrd (Set, list2set)
+import System.Random (Random (randomR), getStdRandom)
+import Test.QuickCheck (Arbitrary (arbitrary), generate)
 
-getRandomInt::Int->IO Int
-getRandomInt n = getStdRandom (randomR (0,n))
+getRandomInt :: Int -> IO Int
+getRandomInt n = getStdRandom (randomR (0, n))
 
 randomFlip :: Num a => a -> IO a
 randomFlip x = do
-   b <- getRandomInt 1
-   if b==0 then return x else return (-x)
+  b <- getRandomInt 1
+  if b == 0 then return x else return (- x)
 
 genIntList :: IO [Int]
 genIntList = do
@@ -33,24 +33,24 @@ genIntList = do
 getIntL :: Int -> Int -> IO [Int]
 getIntL _ 0 = return []
 getIntL k n = do
-   x <-  getRandomInt k
-   y <- randomFlip x
-   xs <- getIntL k (n-1)
-   return (y:xs)
+  x <- getRandomInt k
+  y <- randomFlip x
+  xs <- getIntL k (n -1)
+  return (y : xs)
 
 -- All above from lecture 2 notes
 -- https://docs.google.com/presentation/d/1-2u4dnNMhIhaTHcrMoa08YWqrrx_cYdtVvlY9JpXKVI/edit#slide=id.g410331214a_0_10
 
-getRandomListQuickCheck::IO [Int]
+getRandomListQuickCheck :: IO [Int]
 getRandomListQuickCheck = generate arbitrary :: IO [Int]
 
-generateSetQuickCheck::IO Set
+generateSetQuickCheck :: IO (Set a)
 generateSetQuickCheck = do
-    list2set . nub <$> getRandomListQuickCheck
+  list2set . nub <$> getRandomListQuickCheck
 
-generateSetSystemRandom::IO Set a
+generateSetSystemRandom :: IO (Set a)
 generateSetSystemRandom = do
-    list2set . nub <$> genIntList
+  list2set . nub <$> genIntList
 
 exercise1 :: IO ()
 exercise1 = do
