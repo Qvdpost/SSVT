@@ -58,7 +58,7 @@ preMutation :: String -> Bool
 preMutation s = iban s
 
 postMutation :: String -> Bool
-postMutation s = not (iban s)
+postMutation s = not $ iban s
 
 mutate :: String -> String
 mutate s = s ++ ['0']
@@ -82,7 +82,28 @@ testMutations pre f post = (\x -> pre x --> post (f x))
 exercise7 :: IO ()
 exercise7 = do
   putStrLn $ exercise 7 "IBAN Validator"
-  putStrLn $ "Create a map of countrycode to "
+
+  putStrLn "\n== Test correct recognition of numbers =="
+  putStrLn "Input/Output space coverage: All precomputed credit-card numbers (from a known to be correct source) should evaluate to true."
+  putStrLn "Check [AL35202111090000000001234567 AD1400080001001234567890...] -> True"
+  print test_checkAllCountries
+
+  putStrLn "\n== Test mutation of valid credit-card numbers to be invalid =="
+  putStrLn "Input space coverage: All precomputed credit-card numbers (from a known to be correct source)."
+  putStrLn "Output: True."
+  print (and (map (testMutations preMutation mutate postMutation) getValidIBans))
+
+
+  putStrLn "\n == Comments =="
+  putStrLn "\n This test can be seen as the following Hoare Test: (x -> y = mutate x) result = iban y (result == False) where iban x == True"
+  putStrLn "\n That means that any mutation to x done by 'mutate' should render its result an invalid credit-card number."
+  putStrLn "\n The current mutation implemented is a simple append, but removal of elements as well as swaps of neighbouring elements could also have been implemented."
+  putStrLn "\n Ideally the mutations could be randomly generated such that a more wide input range could be tested for each mutation."
+  putStrLn "\n E.g. append any character and test if the Hoare Triple holds, but also perform any swap. Theoretically Luhn is not fit to detect large displacement errors of individual numbers, so certain swaps should be able to fail the test, but that is a topic we did not explore."
+
+
+
+
 
 _main :: IO ()
 _main =
