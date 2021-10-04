@@ -22,16 +22,16 @@ r @@ s =
   nub [(x, z) | (x, y) <- r, (w, z) <- s, y == w]
 
 -- 1 [(1,2),(2,3),(3,4)] -> [(1,2),(1,3),(1,4)]
-match::Eq a => a -> Rel a -> Bool -> Rel a
-match m r@((x,y):rs) begin
-    | begin = (m,y) : match m rs begin
-    | m == x = (m,y): match m rs True
-    | otherwise = match m rs False
+match :: Eq a => a -> Rel a -> Bool -> Rel a
+match m r@((x, y) : rs) begin
+  | begin = (m, y) : match m rs begin
+  | m == x = (m, y) : match m rs True
+  | otherwise = match m rs False
 match _ [] False = []
 match _ [] True = []
 
 trClos :: Ord a => Rel a -> Rel a
-trClos r = [a | (x,_) <- r,a<- match x r False ]
+trClos r = [a | (x, _) <- r, a <- match x r False]
 
 exercise5 :: IO ()
 exercise5 = do
