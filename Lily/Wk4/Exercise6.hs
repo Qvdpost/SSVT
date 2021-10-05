@@ -19,7 +19,6 @@ import Test.QuickCheck
 subsetOf :: Ord a => Rel a -> Rel a -> Bool
 subsetOf r trRs = all (`elem` trRs) r
 
--- Kind of 6
 prop_subset :: Ord a => Rel a -> Bool
 prop_subset r = r `subsetOf` trClos r
 

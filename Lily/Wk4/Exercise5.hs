@@ -27,8 +27,7 @@ match m r@((x, y) : rs) begin
   | begin = (m, y) : match m rs begin
   | m == x = (m, y) : match m rs True
   | otherwise = match m rs False
-match _ [] False = []
-match _ [] True = []
+match _ [] _ = []
 
 trClos :: Ord a => Rel a -> Rel a
 trClos r = [a | (x, _) <- r, a <- match x r False]

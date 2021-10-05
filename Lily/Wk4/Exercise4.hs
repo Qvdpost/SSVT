@@ -19,9 +19,7 @@ type Rel a = [(a,a)]
 
 remove :: Eq a => a -> [a] -> [a]
 remove x [] = []
-remove x ys@(y:ys') = case x == y of
-                        True -> ys'
-                        _  -> y : remove x ys'
+remove x ys@(y:ys') = if x == y then ys' else y : remove x ys'
 
 -- [a] may not contain duplicates
 isSerial :: Eq a => [a] -> Rel a -> Bool
