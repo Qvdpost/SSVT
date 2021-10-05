@@ -7,7 +7,7 @@ transitive s1 s2 = null (s1 \\ s2)
 
 -- checkDigit::Integer->Bool
 -- checkDigit x = and [True | i<-[2..6] | transitive (show (i*x)) (show x)]
--- Above produces an odd Haskell Language Server suggesting.^
+-- Above produces an odd Haskell Language Server suggestion.^
 --                          This i is to be replaced with i ^
 -- Ensure this is at the top of the haskell file: {-# LANGUAGE ParallelListComp #-}
 -- It makes sense that i is not in scope, the suggestion is odd
