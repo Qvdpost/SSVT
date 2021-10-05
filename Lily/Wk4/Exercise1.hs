@@ -8,13 +8,13 @@ Group Members
 
 -- Time Spent: 30 Minutes
 
-module Exercise1 (_main, generateSetSystemRandom) where
+module Exercise1 (_main, generateSetSystemRandom, generateSetQuickCheck) where
 
 import Data.List (nub)
 import Helper (exercise)
 import SetOrd (Set(Set), list2set)
 import System.Random (Random (randomR), getStdRandom)
-import Test.QuickCheck (Arbitrary (arbitrary), generate, Gen, sample)
+import Test.QuickCheck (Arbitrary (arbitrary), generate, Gen, sample, listOf)
 
 getRandomInt :: Int -> IO Int
 getRandomInt n = getStdRandom (randomR (0, n))
@@ -45,10 +45,13 @@ getRandomListQuickCheck :: Gen [Int]
 getRandomListQuickCheck = arbitrary :: Gen [Int]
 
 generateSetQuickCheck :: Gen (Set Int)
-generateSetQuickCheck = list2set . nub <$> getRandomListQuickCheck
+generateSetQuickCheck = list2set <$> getRandomListQuickCheck
+
+instance (Arbitrary a, Ord a) => Arbitrary (Set a) where
+  arbitrary = list2set . nub <$> listOf arbitrary
 
 generateSetSystemRandom ::  IO (Set Int)
-generateSetSystemRandom = list2set . nub <$> genIntList
+generateSetSystemRandom = list2set <$> genIntList
 
 
 exercise1 :: IO ()

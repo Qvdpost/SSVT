@@ -34,6 +34,7 @@ subSet (Set (x:xs)) set = (inSet x set) && subSet (Set xs) set
 insertSet :: (Ord a) => a -> Set a -> Set a
 insertSet x (Set s) = Set (insertList x s)
 
+insertList :: Ord a => a -> [a] -> [a]
 insertList x [] = [x]
 insertList x ys@(y:ys') = case compare x y of
                                  GT -> y : insertList x ys'
@@ -43,6 +44,7 @@ insertList x ys@(y:ys') = case compare x y of
 deleteSet :: Ord a => a -> Set a -> Set a
 deleteSet x (Set s) = Set (deleteList x s)
 
+deleteList :: Ord a => a -> [a] -> [a]
 deleteList x [] = []
 deleteList x ys@(y:ys') = case compare x y of
                                  GT -> y : deleteList x ys'
