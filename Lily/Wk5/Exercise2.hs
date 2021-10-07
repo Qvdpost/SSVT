@@ -10,8 +10,8 @@ module Exercise2 where
 
 import Data.List (intersect, nub, (\\), union, sort)
 import Helper (exercise)
-import Test.QuickCheck ( (==>), Property, Gen, generate, Arbitrary,arbitrary, suchThat, quickCheck, forAll,Positive,listOf)
-import LTS (LTS,State,Label,LabeledTransition,createLTS)
+import Test.QuickCheck ( (==>), Property, Gen,elements, generate, Arbitrary,arbitrary, suchThat, quickCheck, forAll,Positive,listOf)
+import LTS (LTS,State,Label,LabeledTransition,createLTS,makeSet,tau)
 
 -- Time Spent:
 
@@ -21,17 +21,24 @@ import LTS (LTS,State,Label,LabeledTransition,createLTS)
 -- ([State], [Label], [Label], [LabeledTransition], State)
 
 
-arbitraryLabeledTransition :: Arbitrary a => LabeledTransition
+arbitraryLabeledTransition :: Gen LabeledTransition
 arbitraryLabeledTransition = do
-    i <- arbitrary ::Positive
-    j <- arbitrary ::Positive
-    randomString <- listOf $ elements "abcdefghijklmnopqrstuvwxyz"
+    i <- arbitrary ::Gen Integer
+    j <- arbitrary ::Gen Integer
+    randomString <- listOf $ elements ['a'..'z'] --"abcdefghijklmnopqrstuvwxyz"
     return (i,randomString,j)
 
--- arbitraryIOLTS :: Arbitrary a => Gen ([State], [Label], [Label], [LabeledTransition], State)
--- arbitraryIOLTS = do
---     i <- arbitrary ::Int
---     return (createLTS )
+arbitraryLTS ::Gen LTS
+arbitraryLTS =  createLTS' (listOf (arbitrary ::Gen LabeledTransition))
+
+genState:: Gen [LabeledTransition] -> Gen [State]
+genState transitions =  do
+    states <- makeSet (concatMap (\(from,_,to) -> [from, to]) transitions)
+
+createLTS' :: Gen [LabeledTransition] -> Gen LTS
+createLTS' transitions = do
+    states <- makeSet (concatMap (\(from,_,to) -> [from, to]) transitions)
+    return (states, filter (/= tau) $ makeSet (map (\(_,label,_) -> label) transitions), makeSet transitions, head states)
 
 
 exercise2 :: IO ()
