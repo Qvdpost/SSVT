@@ -12,7 +12,6 @@ import Data.List
 import Helper (exercise)
 import System.Random
 import Test.QuickCheck
-
 --Time Spent:
 
 exercise5 :: IO ()

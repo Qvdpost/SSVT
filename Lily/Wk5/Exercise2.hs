@@ -14,8 +14,6 @@ import Test.QuickCheck ( (==>), Property, Gen, generate, arbitrary, suchThat, qu
 
 -- Time Spent: 
 
-
-
 exercise2 :: IO ()
 exercise2 = do
     putStrLn $ exercise 2 "XX"

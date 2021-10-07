@@ -14,7 +14,7 @@ import Data.List (nub)
 import Helper (exercise)
 import System.Random (Random (randomR), getStdRandom)
 import Test.QuickCheck (Arbitrary (arbitrary), generate, Gen, sample, listOf)
-
+--Time Spent:
 
 
 
