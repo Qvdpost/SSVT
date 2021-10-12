@@ -108,42 +108,42 @@ LTS Properties:
 -- Duplicating states should result in a false LTS
 prop_DuplicateStates :: IOLTS -> Bool
 prop_DuplicateStates iolts =
-    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions, init)) iolts)
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states++states, stim_labels, resp_labels, transitions, init)) iolts)
 
 -- prop_DuplicateStates (states, stim_labels, resp_labels, transitions, init) =
 --     not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states++states, stim_labels, resp_labels, transitions, init)) (createIOLTS transitions))
 
 -- Duplicating all labels should result in a false LTS
 prop_DuplicateLabels :: IOLTS -> Bool
-prop_DuplicateLabels (states, stim_labels, resp_labels, transitions, init) =
-    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels++stim_labels, resp_labels, transitions, init)) (createIOLTS transitions))
+prop_DuplicateLabels iolts =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels++stim_labels, resp_labels, transitions, init)) iolts)
 
 -- Duplicating the transitions should result in a false LTS
 prop_DuplicateTransitions :: IOLTS -> Bool
-prop_DuplicateTransitions (states, stim_labels, resp_labels, transitions, init) =
-    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions++transitions, init)) (createIOLTS transitions))
+prop_DuplicateTransitions iolts =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions++transitions, init)) iolts)
 
 -- Replacing transitions with an empty array should result in a false LTS
 prop_EmptyTransitions :: IOLTS -> Bool
-prop_EmptyTransitions (states, stim_labels, resp_labels, transitions, init) =
-    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, [], init)) (createIOLTS transitions))
+prop_EmptyTransitions iolts =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, [], init)) iolts)
 
 -- Manipulation of transitions (appending a non-existing state) should result in a false LTS
 prop_SublistStates :: IOLTS -> Bool
-prop_SublistStates (states, stim_labels, resp_labels, transitions, init) =
-    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions++[(init, head stim_labels, 0)], init)) (createIOLTS transitions))
+prop_SublistStates iolts =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions++[(init, head stim_labels, 0)], init)) iolts)
 
 -- Manipulation of initState should result in a false LTS
 prop_InitIsElement :: IOLTS -> Bool
-prop_InitIsElement (states, stim_labels, resp_labels, transitions, init) =
-    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions, 0)) (createIOLTS transitions))
+prop_InitIsElement iolts =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions, 0)) iolts)
 
 
 exercise2 :: IO ()
 exercise2 = do
   putStrLn $ exercise 2 "Implement ltsGen :: Gen IOLTS && for a non-io LTS"
 
-  putStrLn "QuickCheck for valid LTS's: "
+  putStrLn "QuickCheck for valid IOLTS's: "
   quickCheck (forAll ltsGen validateLTS)
 
   putStrLn "\nQuickCheck for duplicate state in LTS: "
