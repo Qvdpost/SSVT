@@ -26,9 +26,6 @@ import Test.QuickCheck (Arbitrary (arbitrary), Gen, generate, listOf, sample)
  -- q0 ∈ Q is the initial state
 --}
 
-subsetOf :: Ord a => [a] -> [a] -> Bool
-subsetOf r trRs = all (`elem` trRs) r
-
 -- ([State], [Label], [LabeledTransition], State)
 -- validateLTS :: LTS -> Bool
 -- validateLTS ([],_,_,_) = False
