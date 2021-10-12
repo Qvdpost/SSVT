@@ -37,8 +37,7 @@ after (_,_,transitions,start) label =
 
 exercise4 :: IO ()
 exercise4 = do
-  putStrLn $ exercise 4 "XXX"
-  putStrLn "Example output: "
+  putStrLn $ exercise 4 "Implement After as an infix function"
 
 _main :: IO ()
 _main =
