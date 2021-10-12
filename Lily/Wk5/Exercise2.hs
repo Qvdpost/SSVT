@@ -70,7 +70,7 @@ arbitraryIOLabeledTransitions :: Gen [LabeledTransition]
 arbitraryIOLabeledTransitions =
     sized $
         \n -> do
-            k <- choose (2, n)
+            k <- choose (2, n + 2) -- Generate at least 2 labeled transitions.
             sequence [ arbitraryIOLabeledTransition | _ <- [1..k]] `suchThat` (\transitions -> any (\(_,label,_) -> head label == '!') transitions && any (\(_,label,_) -> head label == '?') transitions)
     -- listOf1 arbitraryIOLabeledTransition
 
