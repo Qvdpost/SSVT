@@ -10,8 +10,8 @@ module Exercise2 where
 
 import Data.List (intersect, nub, sort, union, (\\))
 import Helper (exercise)
-import LTS (LTS, Label, LabeledTransition, State, createLTS, makeSet, tau)
-import Test.QuickCheck (Arbitrary, Gen, Positive, Property, arbitrary, elements, forAll, generate, listOf,listOf1, quickCheck, sample, shuffle, suchThat, (==>))
+import LTS (LTS, IOLTS, Label, LabeledTransition, State, createLTS, createIOLTS, makeSet, tau)
+import Test.QuickCheck (vectorOf,Arbitrary, Gen, Positive, Property, arbitrary, elements, forAll, generate, listOf,listOf1, quickCheck, sample, shuffle, suchThat, (==>))
 
 -- Time Spent:
 
@@ -20,23 +20,55 @@ import Test.QuickCheck (Arbitrary, Gen, Positive, Property, arbitrary, elements,
 
 -- ([State], [Label], [Label], [LabeledTransition], State)
 
-arbitraryLabeledTransition :: Gen LabeledTransition
-arbitraryLabeledTransition = do
-  i <- arbitrary :: Gen Integer
-  j <- arbitrary :: Gen Integer
-  randomString <- listOf $ elements ['a' .. 'z'] --"abcdefghijklmnopqrstuvwxyz"
-  return (i, randomString, j)
+-- arbitraryLabeledTransition :: Gen LabeledTransition
+-- arbitraryLabeledTransition = do
+--   i <- arbitrary :: Gen Integer
+--   j <- arbitrary :: Gen Integer
+--   randomString <- listOf $ elements ['a' .. 'z']
+--   return (i, randomString, j)
+
+-- arbitraryIOLabeledTransition :: Gen LabeledTransition
+-- arbitraryIOLabeledTransition = do
+--   i <- arbitrary :: Gen Integer
+--   j <- arbitrary :: Gen Integer
+--   randomString <- listOf $ elements ['a' .. 'z']
+--   randomIO <- elements ["!", "?"]
+--   return (i, randomIO ++ randomString, j)
 
 arbitraryLabeledTransitions :: Gen [LabeledTransition]
 arbitraryLabeledTransitions = listOf1 (arbitrary :: Gen LabeledTransition)
 
+insertIO :: LabeledTransition -> LabeledTransition -- Gen LabeledTransition
+insertIO (a, lt, b) = do
+    io <- arbitraryIO
+    return (a, [io] ++ lt, b)
+
+arbitraryIOLabeledTransitions:: Gen [LabeledTransition]
+arbitraryIOLabeledTransitions = do
+    lts <- arbitraryLabeledTransitions
+    -- return [(a, [io] ++ lt, b) | (a, lt, b) <-lts | c <- arbitraryIO]
+    return (map (\x -> insertIO x) lts)
+
+arbitraryIO :: Gen Char
+arbitraryIO = elements ['!', '?']
+
+-- arbitraryIOLabel ::
+
 arbitraryLTS :: Gen LTS
 arbitraryLTS = createLTS' arbitraryLabeledTransitions
 
+arbitraryIOLTS :: Gen IOLTS
+arbitraryIOLTS = createIOLTS' arbitraryIOLabeledTransitions
+
 arbitraryStates :: Gen [LabeledTransition] -> Gen [State]
 arbitraryStates transitions = do
-    labeledTransitions <- transitions
-    return (makeSet (concatMap (\(from, _, to) -> [from, to]) labeledTransitions))
+    makeSet . concatMap (\(from, _, to) -> [from, to]) <$> transitions
+
+createIOLTS' :: Gen [LabeledTransition] -> Gen IOLTS
+createIOLTS' transitions = do
+  (states, labels, transitionSet, initState) <- createLTS' transitions
+  return (states, map tail $ filter (\x -> head x == '?') labels, map tail $ filter (\x -> head x == '!') labels, map (\(f, l, t) -> (f, tail l, t)) transitionSet, initState)
+
 
 createLTS' :: Gen [LabeledTransition] -> Gen LTS
 createLTS' transitions = do
