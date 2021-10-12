@@ -47,19 +47,21 @@ subsetOf r trRs = all (`elem` trRs) r
 --                                  | otherwise = True
 -- validateLTS (_,_,[],_) = False
 
-validateLTS :: LTS -> Bool
-validateLTS (states, labels, labeledTransitions, startState) =
+validateLTS :: IOLTS -> Bool
+validateLTS (states, stimulus_labels, response_labels, labeledTransitions, startState) =
   states /= []
     && not (hasDuplicates states)
-    && not (hasDuplicates labels)
+    && not (hasDuplicates stimulus_labels || hasDuplicates response_labels)
     && not (hasDuplicates labeledTransitions)
-    && (null labeledTransitions || checkTransitions (states, labels, labeledTransitions, startState) (createLTS labeledTransitions))
+    && not (null labeledTransitions)
+    && checkTransitions (states, stimulus_labels, response_labels, labeledTransitions, startState) (createIOLTS labeledTransitions)
 
-checkTransitions :: LTS -> LTS -> Bool
-checkTransitions (states1, labels1, _, startState1) (states2, labels2, _, startState2) =
+checkTransitions :: IOLTS -> IOLTS -> Bool
+checkTransitions (states1, stim_labels1, resp_labels1, _, startState1) (states2, stim_labels2, resp_labels2, _, startState2) =
   subList states2 (sort states1)
-    && subList (filter (/= "tau") labels2) (sort labels1)
-    && subList [startState2] states1
+    && subList (filter (/= "tau") stim_labels2) (sort stim_labels1)
+    && subList (filter (/= "tau") resp_labels2) (sort resp_labels1)
+    && subList [startState1] states1
 
 hasDuplicates :: (Ord a) => [a] -> Bool
 hasDuplicates xs = length (nub xs) /= length xs
@@ -76,23 +78,23 @@ exercise1 :: IO ()
 exercise1 = do
   putStrLn $ exercise 1 "Implement Validate LTS"
   putStrLn "Example output: "
-  putStr "tretmanP: "
-  print (validateLTS tretmanP)
+  putStr "tretmanK1: "
+  print (validateLTS tretmanK1)
 
-  putStr "tretmanQ: "
-  print (validateLTS tretmanQ)
+  putStr "tretmanK2: "
+  print (validateLTS tretmanK2)
 
-  putStr "tretmanR: "
-  print (validateLTS tretmanR)
+  putStr "tretmanK3: "
+  print (validateLTS tretmanK3)
 
-  putStr "tretmanU: "
-  print (validateLTS tretmanU)
+  putStr "tretmanI1: "
+  print (validateLTS tretmanI1)
 
-  putStr "tretmanV: "
-  print (validateLTS tretmanV)
+  putStr "tretmanS1: "
+  print (validateLTS tretmanS1)
 
-  putStr "coffeeImplSimple: "
-  print (validateLTS coffeeImplSimple)
+  putStr "coffeeImpl1: "
+  print (validateLTS coffeeImpl1)
 
 _main :: IO ()
 _main = do

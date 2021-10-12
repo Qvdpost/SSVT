@@ -15,6 +15,8 @@ import System.Random
 import Test.QuickCheck
 --Time Spent:
 
+straces :: IOLTS -> [Trace]
+
 exercise3 :: IO ()
 exercise3 = do
   putStrLn $ exercise 3 "XXX"

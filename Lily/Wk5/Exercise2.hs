@@ -12,7 +12,7 @@ import Data.List (intersect, nub, sort, union, (\\))
 import Exercise1 (validateLTS)
 import Helper (exercise)
 import LTS
-import Test.QuickCheck (Arbitrary, Gen, Positive, Property, arbitrary, elements, forAll, generate, listOf, listOf1, quickCheck, sample, shuffle, suchThat, vectorOf, (==>))
+import Test.QuickCheck --(sized, Arbitrary, Gen, Positive, Property, arbitrary, elements, forAll, generate, listOf, listOf1, quickCheck, sample, shuffle, suchThat, vectorOf, (==>))
 
 -- Time Spent:
 
@@ -41,21 +41,41 @@ import Test.QuickCheck (Arbitrary, Gen, Positive, Property, arbitrary, elements,
 
 -- arbitraryIOLabeledTransition = (arbitrary :: Gen LabeledTransition) `suchThat` (\a@(_,x,_) ->  head x == '?' || head x== '!')
 
+-- arbitraryStates :: Gen [LabeledTransition] -> Gen [State]
+-- arbitraryStates transitions = do
+--   makeSet . concatMap (\(from, _, to) -> [from, to]) <$> transitions
+
+arbitraryLabeledTransition :: Gen LabeledTransition
+arbitraryLabeledTransition = do
+  i <- (arbitrary :: Gen Integer) `suchThat` (0 <)
+  j <- (arbitrary :: Gen Integer) `suchThat` (0 <)
+  randomString <- listOf1 $ elements ['a' .. 'z']
+  return (i, randomString, j)
+
 arbitraryLabeledTransitions :: Gen [LabeledTransition]
-arbitraryLabeledTransitions = listOf1 (arbitrary :: Gen LabeledTransition)
+arbitraryLabeledTransitions = listOf1 arbitraryLabeledTransition -- (arbitrary :: Gen LabeledTransition)
 
 arbitraryIOLabeledTransition :: Gen LabeledTransition
 arbitraryIOLabeledTransition = do
-  (a, l, b) <- arbitrary :: Gen LabeledTransition
+  (a, l, b) <- arbitraryLabeledTransition -- arbitrary :: Gen LabeledTransition
   io <- elements ['!', '?']
   return (a, io : l, b)
 
-arbitraryIOLabeledTransitions :: Gen [LabeledTransition]
-arbitraryIOLabeledTransitions = listOf1 arbitraryIOLabeledTransition
+-- containsBothIOs :: Gen [LabeledTransition] -> Gen Bool
+-- containsBothIOs ls = do
+--     t <- ls
+--     return not $ null (map tail $ filter (\x -> head x == '?') getStates t) && not $ null (map tail $ filter (\x -> head x == '!') getStates t)
 
-arbitraryStates :: Gen [LabeledTransition] -> Gen [State]
-arbitraryStates transitions = do
-  makeSet . concatMap (\(from, _, to) -> [from, to]) <$> transitions
+arbitraryIOLabeledTransitions :: Gen [LabeledTransition]
+arbitraryIOLabeledTransitions =
+    sized $
+        \n -> do
+            k <- choose (2, n)
+            sequence [ arbitraryIOLabeledTransition | _ <- [1..k]] `suchThat` (\transitions -> any (\(_,label,_) -> head label == '!') transitions && any (\(_,label,_) -> head label == '?') transitions)
+    -- listOf1 arbitraryIOLabeledTransition
+
+getStates :: [LabeledTransition] -> [State]
+getStates t = makeSet (concatMap (\(from, _, to) -> [from, to]) t)
 
 createIOLTS' :: Gen [LabeledTransition] -> Gen IOLTS
 createIOLTS' transitions = do
@@ -65,23 +85,84 @@ createIOLTS' transitions = do
 createLTS' :: Gen [LabeledTransition] -> Gen LTS
 createLTS' transitions = do
   t <- transitions
-  states <- arbitraryStates transitions
-  return (states, filter (/= tau) $ makeSet (map (\(_, label, _) -> label) t), makeSet t, head states)
+  return (getStates t, filter (/= tau) $ makeSet (map (\(_, label, _) -> label) t), makeSet t, head (getStates t))
 
 arbitraryLTS :: Gen LTS
 arbitraryLTS = createLTS' arbitraryLabeledTransitions
 
-arbitraryIOLTS :: Gen IOLTS
-arbitraryIOLTS = createIOLTS' arbitraryIOLabeledTransitions
+ltsGen :: Gen IOLTS
+ltsGen = createIOLTS' arbitraryIOLabeledTransitions
 
-test_validateLTS :: Gen Bool
-test_validateLTS = do
-  validateLTS <$> arbitraryLTS
+{-
+LTS Properties:
+
+1. No duplicate states
+2. No duplicate labels
+3. No duplicate transitions
+4. non-empty set of transitions
+5. States of transitions are a sublist of LTS states
+6. The initstate is an element of LTS states
+
+-}
+
+-- Duplicating states should result in a false LTS
+prop_DuplicateStates :: IOLTS -> Bool
+prop_DuplicateStates iolts =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions, init)) iolts)
+
+-- prop_DuplicateStates (states, stim_labels, resp_labels, transitions, init) =
+--     not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states++states, stim_labels, resp_labels, transitions, init)) (createIOLTS transitions))
+
+-- Duplicating all labels should result in a false LTS
+prop_DuplicateLabels :: IOLTS -> Bool
+prop_DuplicateLabels (states, stim_labels, resp_labels, transitions, init) =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels++stim_labels, resp_labels, transitions, init)) (createIOLTS transitions))
+
+-- Duplicating the transitions should result in a false LTS
+prop_DuplicateTransitions :: IOLTS -> Bool
+prop_DuplicateTransitions (states, stim_labels, resp_labels, transitions, init) =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions++transitions, init)) (createIOLTS transitions))
+
+-- Replacing transitions with an empty array should result in a false LTS
+prop_EmptyTransitions :: IOLTS -> Bool
+prop_EmptyTransitions (states, stim_labels, resp_labels, transitions, init) =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, [], init)) (createIOLTS transitions))
+
+-- Manipulation of transitions (appending a non-existing state) should result in a false LTS
+prop_SublistStates :: IOLTS -> Bool
+prop_SublistStates (states, stim_labels, resp_labels, transitions, init) =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions++[(init, head stim_labels, 0)], init)) (createIOLTS transitions))
+
+-- Manipulation of initState should result in a false LTS
+prop_InitIsElement :: IOLTS -> Bool
+prop_InitIsElement (states, stim_labels, resp_labels, transitions, init) =
+    not $ validateLTS ((\(states, stim_labels, resp_labels, transitions, init) -> (states, stim_labels, resp_labels, transitions, 0)) (createIOLTS transitions))
+
 
 exercise2 :: IO ()
 exercise2 = do
   putStrLn $ exercise 2 "Implement ltsGen :: Gen IOLTS && for a non-io LTS"
-  putStrLn "Example output: "
+
+  putStrLn "QuickCheck for valid LTS's: "
+  quickCheck (forAll ltsGen validateLTS)
+
+  putStrLn "\nQuickCheck for duplicate state in LTS: "
+  quickCheck (forAll ltsGen prop_DuplicateStates)
+
+  putStrLn "\nQuickCheck for duplicate labels in LTS: "
+  quickCheck (forAll ltsGen prop_DuplicateLabels)
+
+  putStrLn "\nQuickCheck for duplicate transitions in LTS: "
+  quickCheck (forAll ltsGen prop_DuplicateTransitions)
+
+  putStrLn "\nQuickCheck for empty transitions in LTS: "
+  quickCheck (forAll ltsGen prop_EmptyTransitions)
+
+  putStrLn "\nQuickCheck for checking transition states to be a sublist of states in LTS: "
+  quickCheck (forAll ltsGen prop_SublistStates)
+
+  putStrLn "\nQuickCheck for checking if init is a state in LTS: "
+  quickCheck (forAll ltsGen prop_InitIsElement)
 
 _main :: IO ()
 _main = do
