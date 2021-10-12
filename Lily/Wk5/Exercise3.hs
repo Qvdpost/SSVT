@@ -44,7 +44,6 @@ straces s = [map (\(_,l,_) -> l) (reachableStates s)]
 exercise3 :: IO ()
 exercise3 = do
   putStrLn $ exercise 3 "Implement: straces :: LTS -> [Trace]"
-  putStrLn "Example output: "
 
 
 _main :: IO ()
