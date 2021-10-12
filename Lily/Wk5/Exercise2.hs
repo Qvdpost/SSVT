@@ -9,9 +9,10 @@ Group Members
 module Exercise2 where
 
 import Data.List (intersect, nub, sort, union, (\\))
+import Exercise1 (validateLTS)
 import Helper (exercise)
-import LTS (LTS, IOLTS, Label, LabeledTransition, State, createLTS, createIOLTS, makeSet, tau)
-import Test.QuickCheck (vectorOf,Arbitrary, Gen, Positive, Property, arbitrary, elements, forAll, generate, listOf,listOf1, quickCheck, sample, shuffle, suchThat, (==>))
+import LTS
+import Test.QuickCheck (Arbitrary, Gen, Positive, Property, arbitrary, elements, forAll, generate, listOf, listOf1, quickCheck, sample, shuffle, suchThat, vectorOf, (==>))
 
 -- Time Spent:
 
@@ -35,40 +36,31 @@ import Test.QuickCheck (vectorOf,Arbitrary, Gen, Positive, Property, arbitrary, 
 --   randomIO <- elements ["!", "?"]
 --   return (i, randomIO ++ randomString, j)
 
+-- arbitraryIO :: Gen Char
+-- arbitraryIO = elements ['!', '?']
+
+-- arbitraryIOLabeledTransition = (arbitrary :: Gen LabeledTransition) `suchThat` (\a@(_,x,_) ->  head x == '?' || head x== '!')
+
 arbitraryLabeledTransitions :: Gen [LabeledTransition]
 arbitraryLabeledTransitions = listOf1 (arbitrary :: Gen LabeledTransition)
 
-insertIO :: LabeledTransition -> LabeledTransition -- Gen LabeledTransition
-insertIO (a, lt, b) = do
-    io <- arbitraryIO
-    return (a, [io] ++ lt, b)
+arbitraryIOLabeledTransition :: Gen LabeledTransition
+arbitraryIOLabeledTransition = do
+  (a, l, b) <- arbitrary :: Gen LabeledTransition
+  io <- elements ['!', '?']
+  return (a, io : l, b)
 
-arbitraryIOLabeledTransitions:: Gen [LabeledTransition]
-arbitraryIOLabeledTransitions = do
-    lts <- arbitraryLabeledTransitions
-    -- return [(a, [io] ++ lt, b) | (a, lt, b) <-lts | c <- arbitraryIO]
-    return (map (\x -> insertIO x) lts)
-
-arbitraryIO :: Gen Char
-arbitraryIO = elements ['!', '?']
-
--- arbitraryIOLabel ::
-
-arbitraryLTS :: Gen LTS
-arbitraryLTS = createLTS' arbitraryLabeledTransitions
-
-arbitraryIOLTS :: Gen IOLTS
-arbitraryIOLTS = createIOLTS' arbitraryIOLabeledTransitions
+arbitraryIOLabeledTransitions :: Gen [LabeledTransition]
+arbitraryIOLabeledTransitions = listOf1 arbitraryIOLabeledTransition
 
 arbitraryStates :: Gen [LabeledTransition] -> Gen [State]
 arbitraryStates transitions = do
-    makeSet . concatMap (\(from, _, to) -> [from, to]) <$> transitions
+  makeSet . concatMap (\(from, _, to) -> [from, to]) <$> transitions
 
 createIOLTS' :: Gen [LabeledTransition] -> Gen IOLTS
 createIOLTS' transitions = do
   (states, labels, transitionSet, initState) <- createLTS' transitions
   return (states, map tail $ filter (\x -> head x == '?') labels, map tail $ filter (\x -> head x == '!') labels, map (\(f, l, t) -> (f, tail l, t)) transitionSet, initState)
-
 
 createLTS' :: Gen [LabeledTransition] -> Gen LTS
 createLTS' transitions = do
@@ -76,9 +68,19 @@ createLTS' transitions = do
   states <- arbitraryStates transitions
   return (states, filter (/= tau) $ makeSet (map (\(_, label, _) -> label) t), makeSet t, head states)
 
+arbitraryLTS :: Gen LTS
+arbitraryLTS = createLTS' arbitraryLabeledTransitions
+
+arbitraryIOLTS :: Gen IOLTS
+arbitraryIOLTS = createIOLTS' arbitraryIOLabeledTransitions
+
+test_validateLTS :: Gen Bool
+test_validateLTS = do
+  validateLTS <$> arbitraryLTS
+
 exercise2 :: IO ()
 exercise2 = do
-  putStrLn $ exercise 2 "XX"
+  putStrLn $ exercise 2 "Implement ltsGen :: Gen IOLTS && for a non-io LTS"
   putStrLn "Example output: "
 
 _main :: IO ()
