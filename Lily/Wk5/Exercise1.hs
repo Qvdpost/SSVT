@@ -25,10 +25,18 @@ import LTS (LTS)
  -- q0 ∈ Q is the initial state
 --}
 
+subsetOf :: Ord a => [a] -> [a] -> Bool
+subsetOf r trRs = all (`elem` trRs) r
 
 
+-- ([State], [Label], [LabeledTransition], State)
 validateLTS :: LTS -> Bool
-validateLTS (LTS states label labeledTransition newState) = True
+validateLTS ([],_,_,_) = False
+validateLTS (q,l,(a,t,b),q_zero) | length l > 100 = False
+                                 | length q > 100 = False
+                                 | not (a `elem` q && t `elem` l && b `elem` q) = False
+                                 | not (q_zero `elem` q) = False
+                                 | otherwise = True
 
 exercise1 :: IO ()
 exercise1 = do

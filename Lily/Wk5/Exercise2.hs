@@ -8,44 +8,47 @@ Group Members
 
 module Exercise2 where
 
-import Data.List (intersect, nub, (\\), union, sort)
+import Data.List (intersect, nub, sort, union, (\\))
 import Helper (exercise)
-import Test.QuickCheck ( (==>), Property, Gen,elements, generate, Arbitrary,arbitrary, suchThat, quickCheck, forAll,Positive,listOf)
-import LTS (LTS,State,Label,LabeledTransition,createLTS,makeSet,tau)
+import LTS (LTS, Label, LabeledTransition, State, createLTS, makeSet, tau)
+import Test.QuickCheck (Arbitrary, Gen, Positive, Property, arbitrary, elements, forAll, generate, listOf,listOf1, quickCheck, sample, shuffle, suchThat, (==>))
 
 -- Time Spent:
 
 -- ltsGen :: Gen IOLTS
--- ltsGen = 
+-- ltsGen =
 
 -- ([State], [Label], [Label], [LabeledTransition], State)
 
-
 arbitraryLabeledTransition :: Gen LabeledTransition
 arbitraryLabeledTransition = do
-    i <- arbitrary ::Gen Integer
-    j <- arbitrary ::Gen Integer
-    randomString <- listOf $ elements ['a'..'z'] --"abcdefghijklmnopqrstuvwxyz"
-    return (i,randomString,j)
+  i <- arbitrary :: Gen Integer
+  j <- arbitrary :: Gen Integer
+  randomString <- listOf $ elements ['a' .. 'z'] --"abcdefghijklmnopqrstuvwxyz"
+  return (i, randomString, j)
 
-arbitraryLTS ::Gen LTS
-arbitraryLTS =  createLTS' (listOf (arbitrary ::Gen LabeledTransition))
+arbitraryLabeledTransitions :: Gen [LabeledTransition]
+arbitraryLabeledTransitions = listOf1 (arbitrary :: Gen LabeledTransition)
 
-genState:: Gen [LabeledTransition] -> Gen [State]
-genState transitions =  do
-    states <- makeSet (concatMap (\(from,_,to) -> [from, to]) transitions)
+arbitraryLTS :: Gen LTS
+arbitraryLTS = createLTS' arbitraryLabeledTransitions
+
+arbitraryStates :: Gen [LabeledTransition] -> Gen [State]
+arbitraryStates transitions = do
+    labeledTransitions <- transitions
+    return (makeSet (concatMap (\(from, _, to) -> [from, to]) labeledTransitions))
 
 createLTS' :: Gen [LabeledTransition] -> Gen LTS
 createLTS' transitions = do
-    states <- makeSet (concatMap (\(from,_,to) -> [from, to]) transitions)
-    return (states, filter (/= tau) $ makeSet (map (\(_,label,_) -> label) transitions), makeSet transitions, head states)
-
+  t <- transitions
+  states <- arbitraryStates transitions
+  return (states, filter (/= tau) $ makeSet (map (\(_, label, _) -> label) t), makeSet t, head states)
 
 exercise2 :: IO ()
 exercise2 = do
-    putStrLn $ exercise 2 "XX"
-    putStrLn "Example output: "
+  putStrLn $ exercise 2 "XX"
+  putStrLn "Example output: "
 
 _main :: IO ()
 _main = do
-    exercise2
+  exercise2
