@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.settings.json",
+  "compilerOptions": {
+    "declaration": false,
+    "composite": false,
+    "importHelpers": false,
+    "esModuleInterop": true,
+    "rootDir": ".",
+    "types": [
+      "mocha",
+      "node"
+    ]
+  },
+  "include": [
+    "*.ts",
+    "tasks/run-e2e-tests.ts",
+    "tasks/bootstrap-local-dependencies.ts"
+  ]
+}

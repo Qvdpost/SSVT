@@ -1,0 +1,119 @@
+{
+  "folders": [
+    {
+      "name": "core",
+      "path": "packages/core"
+    },
+    {
+      "name": "instrumenter",
+      "path": "packages/instrumenter"
+    },
+    {
+      "name": "grunt-stryker",
+      "path": "packages/grunt-stryker"
+    },
+    {
+      "name": "api",
+      "path": "packages/api"
+    },
+    {
+      "name": "jasmine-runner",
+      "path": "packages/jasmine-runner"
+    },
+    {
+      "name": "jest-runner",
+      "path": "packages/jest-runner"
+    },
+    {
+      "name": "karma-runner",
+      "path": "packages/karma-runner"
+    },
+    {
+      "name": "mocha-runner",
+      "path": "packages/mocha-runner"
+    },
+    {
+      "name": "cucumber-runner",
+      "path": "packages/cucumber-runner"
+    },
+    {
+      "name": "typescript-checker",
+      "path": "packages/typescript-checker"
+    },
+    {
+      "name": "util",
+      "path": "packages/util"
+    },
+    {
+      "name": "test-helpers",
+      "path": "packages/test-helpers"
+    },
+    {
+      "name": "e2e",
+      "path": "e2e"
+    },
+    {
+      "name": "perf",
+      "path": "perf"
+    },
+    {
+      "name": "parent",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "parent/node_modules/typescript/lib",
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/bower_components": true,
+      "**/*.code-search": true,
+      "**/*.tsbuildinfo": true,
+      "**/.stryker-tmp": true,
+      "**/CHANGELOG.md": true,
+      "**/dist": true,
+      "**/.nyc_output": true,
+      "**/reports": true
+    },
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "?(check).js": true
+    },
+    "eslint.validate": [
+      "javascript",
+      "typescript"
+    ],
+    "grunt.autoDetect": "off",
+    "gulp.autoDetect": "off",
+    "jake.autoDetect": "off",
+    "task.autoDetect": "off",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "cSpell.words": [
+      "Errored",
+      "Expirable",
+      "Instrumenter",
+      "Unserializable",
+      "Unserializables",
+      "Whitespaces",
+      "execa",
+      "memfs",
+      "mutables",
+      "mutators",
+      "nocheck",
+      "preprocessors",
+      "quasis",
+      "serializable"
+    ]
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "EditorConfig.EditorConfig"
+    ]
+  }
+}

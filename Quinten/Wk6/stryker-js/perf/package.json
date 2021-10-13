@@ -1,0 +1,15 @@
+{
+  "name": "performance-test",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "ts-node": "~8.10.2",
+    "rxjs": "~7.1.0"
+  },
+  "scripts": {
+    "postinstall": "npm run merge-config && npm run bootstrap",
+    "merge-config": "ts-node -p tasks/merge-config.ts",
+    "bootstrap": "ts-node -p tasks/install.ts",
+    "test": "ts-node tasks/run-perf-tests.ts"
+  }
+}
