@@ -26,7 +26,7 @@ export const uvaMutator: NodeMutator = {
       const replacement = types.cloneNode(path.node, false);
       replacement.operator = mutatedOperator;
       yield replacement;
-    } 
+    }
   },
 };
 
