@@ -13,7 +13,8 @@ import Test.QuickCheck
 
 -- Time Spent:
 
-
+countSurvivors :: Integer -> [([Integer] -> Integer -> Property)] -> (Integer -> [Integer]) -> Integer
+countSurvivors mutNum prop f = 
 
 exercise2 :: IO ()
 exercise2 = do
