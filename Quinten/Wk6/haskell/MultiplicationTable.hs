@@ -19,8 +19,8 @@ prop_sumIsTriangleNumberTimesInput o i = sum o == sum [1..10] * i
 
 -- Property 4: The difference between consecutive elements is the input
 prop_linear :: [Integer] -> Integer -> Bool
-prop_linear [x] _ = True
-linear (x:xs) y = head xs - x == y && linear xs y
+prop_linear (x:y:xs) z = y - x == z && prop_linear (y:xs) z
+prop_linear _ _ = True
 
 -- Property 5: Any element modulo the input is zero
 prop_moduloIsZero :: [Integer] -> Integer -> Bool

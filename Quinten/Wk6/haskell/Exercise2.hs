@@ -14,21 +14,21 @@ import Helper (exercise)
 import Test.QuickCheck
 import Mutation
 import MultiplicationTable
-import Text.Printf
+import Exercise1
 import Data.List
 import Text.PrettyPrint.Boxes
 import Control.Monad
 
 allMutators :: [[Integer] -> Gen [Integer]]
-allMutators = [addElements, removeElements]
+allMutators = [addElements, removeElements, repeatMutator, subsectionMutator]
 
-mutatorNames = ["addElements", "removeElements"]
+mutatorNames = ["addElements", "removeElements", "repeatMutator", "subsectionMutator"]
 
 
 allProps :: [[Integer] -> Integer -> Bool]
-allProps = [prop_tenElements, prop_firstElementIsInput]
+allProps = [prop_tenElements, prop_firstElementIsInput, prop_sumIsTriangleNumberTimesInput, prop_moduloIsZero, prop_linear]
 
-propNames = ["prop_tenElements", "prop_firstElementIsInput"]
+propNames = ["prop_tenElements", "prop_firstElementIsInput", "prop_sumIsTriangleNumberTimesInput", "prop_moduloIsZero", "prop_linear"]
 
 
 -- Time Spent:
@@ -47,17 +47,7 @@ testAllProps :: Int -> (Integer -> [Integer]) -> IO [[Int]]
 testAllProps mutants fut = sequence [testAllMutators mutants prop fut | prop <- allProps]
 
 
--- https://stackoverflow.com/questions/26546523/print-2d-list-of-lists-in-haskell
--- print_ x =  putStr $ show x ++ "\t"
-
--- tableHeader xs = putStr ("\t") >> mapM_ print_ xs >> putStrLn ""
-
--- table xxs
---     | length (nub [length xs | xs <- xxs])/=1 = error "not symmetric"
---     | otherwise = mapM_ printRow xxs
---         where printRow xs = putStr ("\t") >> mapM_ print_ xs >> putStrLn ""
-
-
+-- https://codereview.stackexchange.com/questions/171992/pretty-printed-tables-in-haskell
 pad width x = x ++ replicate k ' '
   where k = width - length x
 
@@ -85,11 +75,10 @@ exercise2 = do
   checks <- testAllMutators 4000 (head allProps) multiplicationTable
   print checks
 
-  putStrLn "\nExample Output allProps: [prop_tenElements, prop_firstElementIsInput]"
+  putStrLn "\nExample Output allProps: [prop_tenElements, prop_firstElementIsInput...]"
   tests <- testAllProps 4000 multiplicationTable
   putStrLn $ render $ table $ ("Survivors: " : mutatorNames) : [propName : [show val | val <- test] | test <- tests | propName <- propNames]
-  -- tableHeader mutatorNames
-  -- table tests
+
 
   putStrLn "\n"
 

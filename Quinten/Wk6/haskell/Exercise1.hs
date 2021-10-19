@@ -8,7 +8,7 @@ Group Members
 
 -- Time Spent: 30 Minutes
 
-module Exercise1 (_main) where
+module Exercise1 where
 
 import Data.List
 import Helper (exercise)
@@ -17,7 +17,7 @@ import Test.QuickCheck
 --Time Spent:
 repeatMutator :: [Integer] -> Gen [Integer]
 repeatMutator xs = do
-    n <- choose(0, 10)
+    n <- choose(1, 10)
     return (take (n * length xs) (cycle xs))
 
 chainMutator :: [Integer] -> [Integer]
