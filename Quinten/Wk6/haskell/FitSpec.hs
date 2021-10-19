@@ -41,8 +41,8 @@ properties multiplicationTable =
   ]
 
 testFitSpec = mainWith args { names = ["multiplicationTable x"]
-                     , nMutants = 40
-                     , nTests = 40
+                     , nMutants = 400
+                     , nTests = 400
                      , timeout = 0
                      }
                 (multiplicationTable :: Integer -> [Integer])

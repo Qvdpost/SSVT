@@ -20,9 +20,9 @@ import Text.PrettyPrint.Boxes
 import Control.Monad
 
 allMutators :: [[Integer] -> Gen [Integer]]
-allMutators = [addElements, removeElements, repeatMutator, subsectionMutator]
+allMutators = [addElements, removeElements, repeatMutator, subsectionMutator, chainMutator]
 
-mutatorNames = ["addElements", "removeElements", "repeatMutator", "subsectionMutator"]
+mutatorNames = ["addElements", "removeElements", "repeatMutator", "subsectionMutator", "chainMutator"]
 
 
 allProps :: [[Integer] -> Integer -> Bool]

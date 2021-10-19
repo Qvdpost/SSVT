@@ -20,8 +20,8 @@ repeatMutator xs = do
     n <- choose(1, 10)
     return (take (n * length xs) (cycle xs))
 
-chainMutator :: [Integer] -> [Integer]
-chainMutator xs = xs ++ [head xs]
+chainMutator :: [Integer] -> Gen [Integer]
+chainMutator xs = choose(1, 10) >>= \limit -> return $ xs ++ [last xs + (head xs * n) | n <- [1..limit]]
 
 flipSignMutator :: [Integer] -> [Integer]
 flipSignMutator xs = map (*(-1)) xs
